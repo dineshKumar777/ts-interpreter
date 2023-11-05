@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "start": "node dist/main.js",
-    "watch": "tsc --watch"
+    "start": "node ./dist/src/main.js",
+    "watch": "tsc --watch",
+    "build": "npx tsc"
   },
   "keywords": [],
   "author": "",
