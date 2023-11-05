@@ -32,7 +32,14 @@ export class Lexer {
 
     switch (this.ch) {
       case '=':
-        tok = this.newToken(TokenType.ASSIGN, this.ch);
+        if (this.peekChar() === '=') {
+          const currCh = this.ch;
+          this.readChar();
+          const literal = currCh + this.ch;
+          tok = this.newToken(TokenType.EQ, literal);
+        } else {
+          tok = this.newToken(TokenType.ASSIGN, this.ch);
+        }
         break;
       case ';':
         tok = this.newToken(TokenType.SEMICOLON, this.ch);
@@ -48,6 +55,31 @@ export class Lexer {
         break;
       case '+':
         tok = this.newToken(TokenType.PLUS, this.ch);
+        break;
+      case '-':
+        tok = this.newToken(TokenType.MINUS, this.ch);
+        break;
+      case '!':
+        if (this.peekChar() === '=') {
+          const currCh = this.ch;
+          this.readChar();
+          const literal = currCh + this.ch;
+          tok = this.newToken(TokenType.NOT_EQ, literal);
+        } else {
+          tok = this.newToken(TokenType.BANG, this.ch);
+        }
+        break;
+      case '/':
+        tok = this.newToken(TokenType.SLASH, this.ch);
+        break;
+      case '*':
+        tok = this.newToken(TokenType.ASTERISK, this.ch);
+        break;
+      case '<':
+        tok = this.newToken(TokenType.LT, this.ch);
+        break;
+      case '>':
+        tok = this.newToken(TokenType.GT, this.ch);
         break;
       case '{':
         tok = this.newToken(TokenType.LBRACE, this.ch);
@@ -111,5 +143,13 @@ export class Lexer {
 
   private chIsDigit(): boolean {
     return this.ch.match(/[0-9]/i) ? true : false;
+  }
+
+  private peekChar(): string {
+    if (this.readPosition >= this.input.length) {
+      return '';
+    } else {
+      return this.input.charAt(this.readPosition);
+    }
   }
 }
