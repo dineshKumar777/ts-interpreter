@@ -21,17 +21,17 @@ describe('Parser', () => {
     expect(program.statements()).toHaveLength(3);
 
     type ParserTest = {
-      exexpectedIdentifier: string;
+      expectedIdentifier: string;
     };
 
     const tests: ParserTest[] = [
-      { exexpectedIdentifier: 'x' },
-      { exexpectedIdentifier: 'y' },
-      { exexpectedIdentifier: 'foobar' },
+      { expectedIdentifier: 'x' },
+      { expectedIdentifier: 'y' },
+      { expectedIdentifier: 'foobar' },
     ];
     tests.forEach((pt: ParserTest, i: number) => {
       const stmt: Statement = program.statementAt(i);
-      testLetStatement(stmt, pt.exexpectedIdentifier);
+      testLetStatement(stmt, pt.expectedIdentifier);
     });
   });
 });
