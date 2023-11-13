@@ -6,14 +6,12 @@ import Statement from './statement';
 class LetStatement implements Statement {
   private _token: Token;
   private _name: Identifier;
-  private _value!: Expression;
+  private _value: Expression | null;
 
   constructor(token: Token, name: Identifier, value: Expression | null) {
     this._token = token;
     this._name = name;
-    if (value) {
-      this._value = value;
-    }
+    this._value = value;
   }
 
   statementNode(): void {}

@@ -1,5 +1,6 @@
 import LetStatement from '../ast/let-statement';
 import Program from '../ast/program';
+import ReturnStatement from '../ast/return-statement';
 import Statement from '../ast/statement';
 import { Lexer } from '../lexer/lexer';
 import Parser from './parser';
@@ -12,13 +13,7 @@ describe('Parser', () => {
       let foobar = 838383;
     `;
 
-    const l: Lexer = new Lexer(input);
-    const p: Parser = new Parser(l);
-    const program: Program = p.parseProgram();
-    checkParserErrors(p);
-
-    expect(program).not.toBeNull();
-    expect(program.statements()).toHaveLength(3);
+    const program: Program = parseProgramForTest(input, 3);
 
     type ParserTest = {
       expectedIdentifier: string;
@@ -33,6 +28,18 @@ describe('Parser', () => {
       const stmt: Statement = program.statementAt(i);
       testLetStatement(stmt, pt.expectedIdentifier);
     });
+  });
+
+  it('should parse return statements', () => {
+    const input = `
+      return 5;
+      return 10;
+      return 993322;
+    `;
+
+    const program: Program = parseProgramForTest(input, 3);
+
+    program.statements().forEach(testReturnStatement);
   });
 });
 
@@ -50,4 +57,20 @@ function testLetStatement(s: Statement, name: string): void {
   const letStmt: LetStatement = s as LetStatement;
   expect(letStmt.name.value).toEqual(name);
   expect(letStmt.name.tokenLiteral()).toEqual(name);
+}
+
+function parseProgramForTest(input: string, numOfStatement: number): Program {
+  const l: Lexer = new Lexer(input);
+  const p: Parser = new Parser(l);
+  const program: Program = p.parseProgram();
+  checkParserErrors(p);
+  expect(program).not.toBeNull();
+  expect(program.statements()).toHaveLength(numOfStatement);
+  return program;
+}
+
+function testReturnStatement(stmt: Statement): void {
+  expect(stmt).toBeInstanceOf(ReturnStatement);
+  const returnStmt: ReturnStatement = stmt as ReturnStatement;
+  expect(returnStmt.tokenLiteral()).toEqual('return');
 }
