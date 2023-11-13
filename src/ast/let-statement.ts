@@ -20,6 +20,12 @@ class LetStatement implements Statement {
     return this._token.literal;
   }
 
+  string(): string {
+    return `${
+      this._token.literal
+    } ${this._name.string()} = ${this._value?.string()};`;
+  }
+
   get name(): Identifier {
     return this._name;
   }

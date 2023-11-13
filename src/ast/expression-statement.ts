@@ -2,24 +2,23 @@ import { Token } from '../token/token';
 import Expression from './expression';
 import Statement from './statement';
 
-class ReturnStatement implements Statement {
+class ExpressionStatement implements Statement {
   private _token: Token;
-  private _returnValue: Expression | null;
+  private _expression: Expression;
 
-  constructor(token: Token, returnValue: Expression | null) {
+  constructor(token: Token, expression: Expression) {
     this._token = token;
-    this._returnValue = returnValue;
+    this._expression = expression;
   }
 
   statementNode(): void {}
-
   tokenLiteral(): string {
     return this._token.literal;
   }
 
   string(): string {
-    return `${this.tokenLiteral()} ${this._returnValue?.string()};`;
+    return this._expression.string();
   }
 }
 
-export default ReturnStatement;
+export default ExpressionStatement;

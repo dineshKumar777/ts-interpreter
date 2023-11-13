@@ -16,6 +16,10 @@ class Identifier implements Expression {
     return this._token.literal;
   }
 
+  string(): string {
+    return this._value;
+  }
+
   public get value(): string {
     return this._value;
   }
